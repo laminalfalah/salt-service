@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  salt-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: salt-service
+    image: salt-service:latest
+    ports:
+      - '8080:8080'
+    restart: always

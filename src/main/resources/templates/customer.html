@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>Customer</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+            crossorigin="anonymous"
+    />
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
+            rel="stylesheet"
+            crossorigin="anonymous"
+    />
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"
+            rel="stylesheet"
+            crossorigin="anonymous"
+    />
+    <link
+            href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css"
+            rel="stylesheet"
+            crossorigin="anonymous"
+    />
+    <link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body class="d-flex flex-column h-100" style="min-height: 100vh; padding-top: 4.2rem">
+    <div th:id="loading" aria-hidden="true" role="dialog"></div>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">Navigation</a>
+            <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/customers}">Customer</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-shrink-0 mb-3">
+        <div class="container">
+            <div class="d-flex my-3">
+                <div class="me-auto">
+                    <h4>Customer</h4>
+                </div>
+                <div>
+                    <a
+                            id="create"
+                            href="javascript:void(0)"
+                            class="btn btn-sm btn-primary"
+                            title="Create"
+                            data-bs-toggle="modal"
+                            data-bs-target="#createModal"
+                    >
+                        <i class="bi bi-plus-circle"></i>
+                    </a>
+                    <a id="refresh" href="javascript:void(0)" class="btn btn-sm btn-success" title="Refresh">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="table_customer" class="table table-sm table-striped table-bordered table-hover">
+                    <thead class="table-light"></thead>
+                    <tbody class="align-middle"></tbody>
+                    <tfoot class="table-light"></tfoot>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted">Footer.</span>
+        </div>
+    </footer>
+
+    <div
+            class="modal fade"
+            id="createModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="createModalLabel"
+            aria-hidden="true"
+            role="dialog"
+    >
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-lg">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createModalLabel">Create</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="createForm" name="customers" role="form" action="javascript:void(0)">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="name"
+                                    name="name"
+                                    placeholder="Name ex. Jhon Smith"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="col-form-label">City:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="city"
+                                    name="city"
+                                    placeholder="City ex. West Jakarta"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="state" class="col-form-label">State:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="state"
+                                    name="state"
+                                    placeholder="State ex. Jakarta"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="dateRegistration" class="col-form-label">Date Registration:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="dateRegistration"
+                                    name="dateRegistration"
+                                    placeholder="Date Registration ex. 01-02-2022 00:00:00"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="col-form-label">Address:</label>
+                            <textarea class="form-control" id="address" name="address" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="col-form-label">Status:</label>
+                            <select id="status" name="status" class="form-select" aria-label="Select Status" required>
+                                <option selected disabled>Status</option>
+                                <option value="ACTIVE">Active</option>
+                                <option value="NOT_ACTIVE">Not Active</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div
+            class="modal fade"
+            id="editModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="editModalLabel"
+            aria-hidden="true"
+            role="dialog"
+    >
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-lg">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editForm" name="customers" role="form" action="javascript:void(0)">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="name"
+                                    name="name"
+                                    placeholder="Name ex. Jhon Smith"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="col-form-label">City:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="city"
+                                    name="city"
+                                    placeholder="City ex. West Jakarta"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="state" class="col-form-label">State:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="state"
+                                    name="state"
+                                    placeholder="State ex. Jakarta"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="dateRegistration" class="col-form-label">Date Registration:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="dateRegistration"
+                                    name="dateRegistration"
+                                    placeholder="Date Registration ex. 01-02-2022 00:00:00"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="col-form-label">Address:</label>
+                            <textarea class="form-control" id="address" name="address" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="col-form-label">Status:</label>
+                            <select id="status" name="status" class="form-select" aria-label="Select Status" required>
+                                <option selected disabled>Status</option>
+                                <option value="ACTIVE">Active</option>
+                                <option value="NOT_ACTIVE">Not Active</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div
+            class="modal fade"
+            id="showModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="showModalLabel"
+            aria-hidden="true"
+            role="dialog"
+    >
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-lg">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="showModalLabel">Show</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="showForm" name="customers" role="form" action="javascript:void(0)">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="name"
+                                    name="name"
+                                    placeholder="Name ex. Jhon Smith"
+                                    required
+                                    disabled
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="col-form-label">City:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="city"
+                                    name="city"
+                                    placeholder="City ex. West Jakarta"
+                                    required
+                                    disabled
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="state" class="col-form-label">State:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="state"
+                                    name="state"
+                                    placeholder="State ex. Jakarta"
+                                    required
+                                    disabled
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="dateRegistration" class="col-form-label">Date Registration:</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="dateRegistration"
+                                    name="dateRegistration"
+                                    placeholder="Date Registration ex. 01-02-2022 00:00:00"
+                                    required
+                                    disabled
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="col-form-label">Address:</label>
+                            <textarea class="form-control" id="address" name="address" required disabled></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="col-form-label">Status:</label>
+                            <select id="status" name="status" class="form-select" aria-label="Select Status" required disabled>
+                                <option selected disabled>Status</option>
+                                <option value="ACTIVE">Active</option>
+                                <option value="NOT_ACTIVE">Not Active</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div
+            class="modal fade"
+            id="deleteModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="deleteModalLabel"
+            aria-hidden="true"
+            role="dialog"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content rounded-lg">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="showModalLabel">Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Do you want delete data ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button id="confirmDelete" type="button" class="btn btn-danger">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.spring-friendly.js}"></script>
+    <script th:src="@{/js/app.js}"></script>
+    <script th:src="@{/js/customer.js}"></script>
+</body>
+</html>
